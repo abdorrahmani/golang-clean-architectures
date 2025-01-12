@@ -1,6 +1,7 @@
 package configs
 
 import (
+	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
@@ -8,15 +9,24 @@ import (
 )
 
 type Config struct {
+	AppName     string
 	ServerPort  string
 	DatabaseDSN string
 }
 
 func LoadConfig() Config {
-	dsn := "user:password@tcp(db:3306)/mydb?charset=utf8mb4&parseTime=True&loc=Local"
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found. Using default values.")
+	}
+
+	dsn := os.Getenv("DB_USER") + ":" + os.Getenv("DB_PASSWORD") +
+		"@tcp(" + os.Getenv("DB_HOST") + ":" + os.Getenv("DB_PORT") + ")/" +
+		os.Getenv("DB_NAME") + "?charset=utf8mb4&parseTime=True&loc=Local"
+
 	return Config{
+		AppName:     getEnv("APP_NAME", "default-app"),
 		ServerPort:  getEnv("SERVER_PORT", "8080"),
-		DatabaseDSN: getEnv("DATABASE_DSN", dsn),
+		DatabaseDSN: dsn,
 	}
 }
 
