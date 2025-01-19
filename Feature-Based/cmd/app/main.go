@@ -27,6 +27,9 @@ func main() {
 	{
 		postRoutes.GET("/", postHandler.GetAllPosts)
 		postRoutes.POST("/", postHandler.CreatePost)
+		postRoutes.GET("/:id", postHandler.GetPostByID)
+		postRoutes.PUT("/:id", postHandler.UpdatePost)
+		postRoutes.DELETE("/:id", postHandler.DeletePost)
 	}
 	// Start the server
 	log.Printf("Server running at http://localhost:%s", config.ServerPort)

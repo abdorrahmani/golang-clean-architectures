@@ -30,16 +30,13 @@ func (s *postService) GetAllPosts() ([]post.Post, error) {
 }
 
 func (s *postService) GetPostByID(id uint) (*post.Post, error) {
-	//TODO implement me
-	panic("implement me")
+	return s.repo.FindByID(id)
 }
 
 func (s *postService) UpdatePost(post *post.Post) error {
-	//TODO implement me
-	panic("implement me")
+	return s.repo.Update(post)
 }
 
 func (s *postService) DeletePost(id uint) error {
-	//TODO implement me
-	panic("implement me")
+	return s.repo.Delete(id)
 }

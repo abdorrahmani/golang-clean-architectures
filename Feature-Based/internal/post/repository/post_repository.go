@@ -35,16 +35,17 @@ func (r *postRepository) Create(post *post.Post) error {
 }
 
 func (r *postRepository) FindByID(id uint) (*post.Post, error) {
-	//TODO implement me
-	panic("implement me")
+	var post post.Post
+	if err := r.db.First(&post, id).Error; err != nil {
+		return nil, err
+	}
+	return &post, nil
 }
 
 func (r *postRepository) Update(post *post.Post) error {
-	//TODO implement me
-	panic("implement me")
+	return r.db.Save(post).Error
 }
 
 func (r *postRepository) Delete(id uint) error {
-	//TODO implement me
-	panic("implement me")
+	return r.db.Delete(&post.Post{}, id).Error
 }
