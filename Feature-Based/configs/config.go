@@ -14,7 +14,7 @@ type Config struct {
 	DatabaseDSN string
 }
 
-func LoadConfig() Config {
+func LoadConfig() *Config {
 	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found. Using default values.")
 	}
@@ -23,7 +23,7 @@ func LoadConfig() Config {
 		"@tcp(" + os.Getenv("DB_HOST") + ":" + os.Getenv("DB_PORT") + ")/" +
 		os.Getenv("DB_NAME") + "?charset=utf8mb4&parseTime=True&loc=Local"
 
-	return Config{
+	return &Config{
 		AppName:     getEnv("APP_NAME", "default-app"),
 		ServerPort:  getEnv("SERVER_PORT", "8080"),
 		DatabaseDSN: dsn,
