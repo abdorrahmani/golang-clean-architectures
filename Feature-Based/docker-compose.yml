@@ -1,28 +1,27 @@
-version: '3.8'
-
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: cosmtrek/air
+    container_name: feature_based
+    working_dir: /app
+    volumes:
+      - .:/app
     ports:
-      - "${SERVER_PORT}:8080"
+      - "8080:8080"
     environment:
       - APP_NAME=${APP_NAME}
-      - SERVER_PORT=${SERVER_PORT}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
+      - SERVER_PORT=8080
+      - DB_HOST=db
+      - DB_PORT=3306
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
-    volumes:
-      - .:/app
     depends_on:
       - db
+    command: ["air", "-c", ".air.toml"]
 
   db:
     image: mysql:8.0
-    container_name: mysql
+    container_name: mysql_db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
@@ -41,7 +40,7 @@ services:
       - "8081:80"
     environment:
       PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     depends_on:
       - db
 
