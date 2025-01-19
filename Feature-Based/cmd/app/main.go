@@ -2,6 +2,10 @@ package main
 
 import (
 	"Feature-Based/configs"
+	"Feature-Based/internal/post"
+	"Feature-Based/internal/post/handler"
+	"Feature-Based/internal/post/repository"
+	"Feature-Based/internal/post/service"
 	"github.com/gin-gonic/gin"
 	"log"
 )
@@ -11,10 +15,19 @@ func main() {
 
 	db := configs.ConnectDB(config.DatabaseDSN)
 
-	log.Println(db)
+	db.AutoMigrate(&post.Post{})
+
+	postRepo := repository.NewPostRepository(db)
+	postService := service.NewPostService(postRepo)
+	postHandler := handler.NewPostHandler(postService)
 
 	r := gin.Default()
 
+	postRoutes := r.Group("/api/v1/posts")
+	{
+		postRoutes.GET("/", postHandler.GetAllPosts)
+		postRoutes.POST("/", postHandler.CreatePost)
+	}
 	// Start the server
 	log.Printf("Server running at http://localhost:%s", config.ServerPort)
 	err := r.Run(":" + config.ServerPort)
