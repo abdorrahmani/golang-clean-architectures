@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"errors"
 	"github.com/golang-jwt/jwt/v5"
 	"time"
 )
@@ -8,6 +9,7 @@ import (
 type JWTService interface {
 	GenerateToken(userID uint) (string, error)
 	ValidateToken(token string) (*jwt.Token, error)
+	GetUserIDFromToken(token string) (uint, error)
 }
 
 type jwtService struct {
@@ -35,4 +37,18 @@ func (j *jwtService) ValidateToken(token string) (*jwt.Token, error) {
 		}
 		return []byte(j.secretKey), nil
 	})
+}
+
+func (j *jwtService) GetUserIDFromToken(token string) (uint, error) {
+	parsedToken, err := j.ValidateToken(token)
+	if err != nil {
+		return 0, err
+	}
+
+	if claims, ok := parsedToken.Claims.(jwt.MapClaims); ok && parsedToken.Valid {
+		if userID, ok := claims["user_id"].(float64); ok {
+			return uint(userID), nil
+		}
+	}
+	return 0, errors.New("invalid token")
 }

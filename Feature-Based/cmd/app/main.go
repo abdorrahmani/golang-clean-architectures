@@ -26,7 +26,7 @@ func main() {
 	userRepo := authRepository.NewUserRepository(db)
 	authService := authService.NewAuthService(userRepo)
 	authHandler := authHandler.NewAuthHandler(authService, jwtService)
-	_ = authMiddleware.NewAuthMiddleware(jwtService)
+	authMiddleware := authMiddleware.NewAuthMiddleware(jwtService)
 
 	postRepo := postRepository.NewPostRepository(db)
 	postService := postService.NewPostService(postRepo)
@@ -34,9 +34,17 @@ func main() {
 
 	r := gin.Default()
 
-	r.POST("/register", authHandler.Register)
-	r.POST("/login", authHandler.Login)
+	public := r.Group("/api/v1")
+	{
+		public.POST("/register", authHandler.Register)
+		public.POST("/login", authHandler.Login)
+	}
 
+	protected := r.Group("/api/v1")
+	protected.Use(authMiddleware.Authorize())
+	{
+		protected.GET("/user", authHandler.GetUserInfo)
+	}
 	postRoutes := r.Group("/api/v1/posts")
 	{
 		postRoutes.GET("/", postHandler.GetAllPosts)
