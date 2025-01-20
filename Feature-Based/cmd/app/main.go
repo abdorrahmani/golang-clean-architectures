@@ -2,10 +2,15 @@ package main
 
 import (
 	"Feature-Based/configs"
+	"Feature-Based/internal/auth"
+	authHandler "Feature-Based/internal/auth/handler"
+	authMiddleware "Feature-Based/internal/auth/middleware"
+	authRepository "Feature-Based/internal/auth/repository"
+	authService "Feature-Based/internal/auth/service"
 	"Feature-Based/internal/post"
-	"Feature-Based/internal/post/handler"
-	"Feature-Based/internal/post/repository"
-	"Feature-Based/internal/post/service"
+	postHandler "Feature-Based/internal/post/handler"
+	postRepository "Feature-Based/internal/post/repository"
+	postService "Feature-Based/internal/post/service"
 	"github.com/gin-gonic/gin"
 	"log"
 )
@@ -15,13 +20,22 @@ func main() {
 
 	db := configs.ConnectDB(config.DatabaseDSN)
 
-	db.AutoMigrate(&post.Post{})
+	db.AutoMigrate(&auth.User{}, &post.Post{})
 
-	postRepo := repository.NewPostRepository(db)
-	postService := service.NewPostService(postRepo)
-	postHandler := handler.NewPostHandler(postService)
+	jwtService := auth.NewJWTService(config.JWTSecret)
+	userRepo := authRepository.NewUserRepository(db)
+	authService := authService.NewAuthService(userRepo)
+	authHandler := authHandler.NewAuthHandler(authService, jwtService)
+	_ = authMiddleware.NewAuthMiddleware(jwtService)
+
+	postRepo := postRepository.NewPostRepository(db)
+	postService := postService.NewPostService(postRepo)
+	postHandler := postHandler.NewPostHandler(postService)
 
 	r := gin.Default()
+
+	r.POST("/register", authHandler.Register)
+	r.POST("/login", authHandler.Login)
 
 	postRoutes := r.Group("/api/v1/posts")
 	{
