@@ -1,19 +1,12 @@
-FROM golang:1.23 AS builder
+# Choose whatever you want, version >= 1.16
+FROM golang:1.23-alpine
 LABEL authors="Anophel"
 
 WORKDIR /app
 
-COPY . .
+RUN go install github.com/air-verse/air@latest
 
-RUN go mod tidy
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main ./cmd/app/main.go
+COPY go.mod go.sum ./
+RUN go mod download
 
-FROM alpine:latest
-
-RUN apk --no-cache add ca-certificates
-
-WORKDIR /root/
-
-COPY --from=builder /app/main .
-
-CMD ["./main"]
+CMD ["air", "-c", ".air.toml"]

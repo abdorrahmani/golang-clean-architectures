@@ -1,0 +1,18 @@
+# Config file for Air
+
+[build]
+  # Binary name
+  bin = "./main"
+
+  # Command to build the project
+  cmd = "go build -o main ./cmd/app/main.go"
+
+  # Watch these directories for changes
+  include_dir = ["./"]
+
+  # Exclude these directories
+  exclude_dir = ["vendor", "node_modules"]
+
+[log]
+  # Enable colorful logs
+  color = true

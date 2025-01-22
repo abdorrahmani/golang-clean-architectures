@@ -8,6 +8,9 @@ services:
       - "${APP_PORT}:8080"
     env_file:
       - .env
+    volumes:
+      - .:/app
+      - /app/tmp
     depends_on:
       - db
   db:
