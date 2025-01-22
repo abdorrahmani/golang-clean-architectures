@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 	"vertical-slice/config"
-	"vertical-slice/pkg/database"
+	"vertical-slice/internal/pkg/database"
 )
 
 func main() {
