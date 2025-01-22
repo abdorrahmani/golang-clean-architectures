@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"vertical-slice/config"
+	"vertical-slice/pkg/database"
 )
 
 func main() {
@@ -12,6 +13,8 @@ func main() {
 	if err != nil {
 		log.Fatalf("Could not load config: %v", err)
 	}
+
+	database.ConnectDatabase(cfg)
 
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
