@@ -8,6 +8,7 @@ import (
 	createEndpoint "vertical-slice/internal/modules/products/features/creating_product/endpoints"
 	"vertical-slice/internal/modules/products/features/getting_all_products/endpoints"
 	getEndpoint "vertical-slice/internal/modules/products/features/getting_product_by_id/endpoints"
+	endpoints2 "vertical-slice/internal/modules/products/features/updating_product/endpoints"
 	"vertical-slice/internal/pkg/database"
 	"vertical-slice/internal/shared/app"
 )
@@ -31,6 +32,7 @@ func main() {
 	r.GET("/products", endpoints.GetAllProductsEndpoint)
 	r.POST("/products", createEndpoint.CreateProductEndpoint)
 	r.GET("/products/:id", getEndpoint.GetProductByIDEndpoint)
+	r.PUT("/products/:id", endpoints2.UpdateProductEndpoint)
 
 	err = r.Run(":" + cfg.App.Port)
 	if err != nil {
