@@ -5,7 +5,9 @@ import (
 	"log"
 	"net/http"
 	"vertical-slice/config"
+	"vertical-slice/internal/modules/products/features/creating_product/endpoints"
 	"vertical-slice/internal/pkg/database"
+	"vertical-slice/internal/shared/app"
 )
 
 func main() {
@@ -15,6 +17,7 @@ func main() {
 	}
 
 	database.ConnectDatabase(cfg)
+	app.RunMigration()
 
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
@@ -22,6 +25,7 @@ func main() {
 			"message": "pong",
 		})
 	})
+	r.POST("/products", endpoints.CreateProductEndpoint)
 	err = r.Run(":" + cfg.App.Port)
 	if err != nil {
 		log.Fatalf("Faild to start server : %v", err)
