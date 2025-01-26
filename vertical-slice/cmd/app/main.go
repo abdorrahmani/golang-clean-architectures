@@ -5,7 +5,8 @@ import (
 	"log"
 	"net/http"
 	"vertical-slice/config"
-	"vertical-slice/internal/modules/products/features/creating_product/endpoints"
+	createEndpoint "vertical-slice/internal/modules/products/features/creating_product/endpoints"
+	getEndpoint "vertical-slice/internal/modules/products/features/getting_product_by_id/endpoints"
 	"vertical-slice/internal/pkg/database"
 	"vertical-slice/internal/shared/app"
 )
@@ -25,7 +26,9 @@ func main() {
 			"message": "pong",
 		})
 	})
-	r.POST("/products", endpoints.CreateProductEndpoint)
+	r.POST("/products", createEndpoint.CreateProductEndpoint)
+	r.GET("/products/:id", getEndpoint.GetProductByIDEndpoint)
+
 	err = r.Run(":" + cfg.App.Port)
 	if err != nil {
 		log.Fatalf("Faild to start server : %v", err)
