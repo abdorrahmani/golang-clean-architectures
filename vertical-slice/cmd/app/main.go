@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"vertical-slice/config"
 	createEndpoint "vertical-slice/internal/modules/products/features/creating_product/endpoints"
+	"vertical-slice/internal/modules/products/features/getting_all_products/endpoints"
 	getEndpoint "vertical-slice/internal/modules/products/features/getting_product_by_id/endpoints"
 	"vertical-slice/internal/pkg/database"
 	"vertical-slice/internal/shared/app"
@@ -26,6 +27,8 @@ func main() {
 			"message": "pong",
 		})
 	})
+
+	r.GET("/products", endpoints.GetAllProductsEndpoint)
 	r.POST("/products", createEndpoint.CreateProductEndpoint)
 	r.GET("/products/:id", getEndpoint.GetProductByIDEndpoint)
 
