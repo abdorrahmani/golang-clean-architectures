@@ -25,8 +25,12 @@ func NewProductRepository(db *gorm.DB) ProductRepository {
 }
 
 func (r *GormProductRepository) GetAllProducts() ([]models.Product, error) {
-	//TODO implement me
-	panic("implement me")
+	var products []models.Product
+	err := r.db.Find(&products).Error
+	if err != nil {
+		return nil, err
+	}
+	return products, nil
 }
 
 func (r *GormProductRepository) CreateProduct(product *models.Product) (*models.Product, error) {
