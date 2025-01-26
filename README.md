@@ -1,15 +1,22 @@
-# golang-clean-architectures
+# Golang Clean Architectures
 
 ![Go Version](https://img.shields.io/badge/Go-1.23-blue?style=flat-square&logo=go) ![Docker](https://img.shields.io/badge/Docker-Supported-blue?style=flat-square&logo=docker) ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
 ## Overview
-**golang-clean-architectures** is a repository that showcases various architecture patterns commonly used in Golang projects. Each folder in this repository demonstrates an independent architecture style, enabling developers to explore, learn, and implement them in real-world projects.
+**Golang Clean Architectures** is a repository that showcases various architecture patterns commonly used in Golang projects. Each folder in this repository demonstrates an independent architecture style, enabling developers to explore, learn, and implement them in real-world projects.
 
 ### Current Architectures
 - **Feature-Based Architecture**:
     - The first implementation in this repository.
     - Organizes the codebase by features to improve modularity, scalability, and maintainability.
     - Includes a fully functional project with JWT-based authentication, user registration, and post management.
+
+
+- **Vertical Slice Architecture**:
+  - Focuses on organizing the codebase by vertical features (or slices) rather than horizontal technical layers.
+  - Each slice contains all necessary logic (e.g., endpoints, commands, queries, and database access) for a specific functionality.
+  - Demonstrates modularity, scalability, and independence of features, making it easier to scale and maintain large applications.
+
 
 ### Future Architectures (Coming Soon)
 - **Hexagonal Architecture** (Ports and Adapters)
@@ -43,6 +50,23 @@ The **Feature-Based Architecture** is included in the `Feature-Based` folder. It
 - Implementing modular design principles.
 
 Learn more in the [Feature-Based README](Feature-Based/README.md).
+
+
+---
+
+## Vertical Slice Architecture
+
+The **Vertical Slice Architecture** is a feature-oriented architecture that organizes the codebase into independent slices. Each slice is responsible for a specific feature, containing everything required to implement it, including API endpoints, business logic, data models, and database access.
+
+### Benefits:
+- Feature-focused development.
+- Better modularity and reduced dependencies between features.
+- Easier to maintain and scale in large codebases.
+- Independent development and testing of features.
+
+Learn more in the [Vertical Slice README](vertical-slice/README.md).
+
+---
 
 ## Contribution Guidelines
 We welcome contributions! Feel free to:
