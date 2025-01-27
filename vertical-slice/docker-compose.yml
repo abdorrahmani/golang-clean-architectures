@@ -38,5 +38,20 @@ services:
     depends_on:
       - db
 
+  test_db:
+    image: mysql:8.0
+    container_name: mysql_test_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: test_root_password
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: test_user
+      MYSQL_PASSWORD: test_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - test_db_data:/var/lib/mysql
+
 volumes:
   db_data:
+  test_db_data:
