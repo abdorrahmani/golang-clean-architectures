@@ -13,6 +13,9 @@ func main() {
 		log.Fatal(err)
 	}
 
+	config.ConnectToDB(cfg)
+	config.RunMigration()
+
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
