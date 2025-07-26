@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"hexagonal/internal/domain"
 	"log"
 )
 
@@ -33,7 +34,7 @@ func ConnectToDB(cfg *Config) {
 // RunMigration runs the database migrations using GORM's AutoMigrate feature.
 // It will automatically create or update the database schema based on the models defined in the application.
 func RunMigration() {
-	err := DB.AutoMigrate()
+	err := DB.AutoMigrate(&domain.Post{})
 	if err != nil {
 		log.Fatalf("❌ Failed to run migrations: %v", err)
 	}
